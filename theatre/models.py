@@ -27,7 +27,16 @@ class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
-    actor = models.ForeignKey(Actor, on_delete=models.CASCADE, null=True)
+    actors = models.ManyToManyField(
+        Actor,
+        related_name="plays",
+        blank=True
+    )
+
+    def __str__(self):
+        return self.title
+
+
 
 
 class TheatreHall(models.Model):
