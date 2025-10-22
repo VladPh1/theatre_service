@@ -27,7 +27,7 @@ class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
-    actors = models.ManyToManyField(
+    actor = models.ManyToManyField(
         Actor,
         related_name="plays",
         blank=True
