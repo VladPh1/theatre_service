@@ -104,12 +104,6 @@ class PLayViewSet(
 
         return PlaySerializer
 
-    @action(
-        methods=["POST"],
-        detail=True,
-        permission_classes=[IsAdminUser],
-    )
-
 
 class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = (
