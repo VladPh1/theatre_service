@@ -4,11 +4,6 @@ from django.db import models
 from theatre_service import settings
 
 
-class Play(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-
-
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -28,10 +23,11 @@ class Actor(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-# def movie_image_path(movie: "Movie", filename: str) -> str:
-#     filename = (f"{slugify(movie.title)}-{str(uuid.uuid4())}"
-#                 + pathlib.Path(filename).suffix)
-#     return str(pathlib.Path("uploads/movies/") / pathlib.Path(filename))
+class Play(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
 
 
 class TheatreHall(models.Model):
