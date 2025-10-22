@@ -26,8 +26,8 @@ class Actor(models.Model):
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE, null=True)
 
 
 class TheatreHall(models.Model):
