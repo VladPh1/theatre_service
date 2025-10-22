@@ -28,3 +28,26 @@ class Actor(models.Model):
 #     filename = (f"{slugify(movie.title)}-{str(uuid.uuid4())}"
 #                 + pathlib.Path(filename).suffix)
 #     return str(pathlib.Path("uploads/movies/") / pathlib.Path(filename))
+
+
+
+class TheatreHall(models.Model):
+    name = models.CharField(max_length=255)
+    rows = models.IntegerField()
+    seats_in_row = models.IntegerField()
+
+    @property
+    def capacity(self) -> int:
+        return self.rows * self.seats_in_row
+
+    def __str__(self):
+        return self.name
+
+
+class Performance(models.Model):
+    play = models.ForeignKey(Play, on_delete=models.CASCADE)
+    theatre_hall = models.ForeignKey(TheatreHall, on_delete=models.CASCADE)
+    show_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.play.title + " " + self.theatre_hall.name
