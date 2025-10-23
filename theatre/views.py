@@ -3,12 +3,19 @@ from datetime import datetime
 from django.db.models import F, Count
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
-from theatre.models import Genre, Actor, TheatreHall, Play, Performance, Reservation
+from theatre.models import (
+    Genre,
+    Actor,
+    TheatreHall,
+    Play,
+    Performance,
+    Reservation,
+    Ticket
+)
 from theatre.permissions import IsAdminOrIfAuthenticatedReadOnly
 
 from theatre.serializers import (
@@ -23,6 +30,8 @@ from theatre.serializers import (
     PlayListSerializer,
     ReservationSerializer,
     ReservationListSerializer,
+    TicketSerializer,
+    TicketListSerializer,
 )
 
 
@@ -143,6 +152,25 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             return PerformanceDetailSerializer
 
         return PerformanceSerializer
+
+
+class TicketViewSet(
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
+
+    serializer_class = TicketSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Ticket.objects.filter(reservation__user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return TicketListSerializer
+
+        return TicketSerializer
 
 
 class ReservationPagination(PageNumberPagination):
